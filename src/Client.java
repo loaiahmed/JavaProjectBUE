@@ -51,25 +51,27 @@ public class Client extends User{
         System.out.println("added ticket.");
     }
 
-    public void viewTicket(Ticket ticket) {
-        if(!(this.tickets.contains(ticket))){
-            System.out.println("Ticket not found.");
+    public void viewTickets() {
+        if(this.tickets.isEmpty()){
+            System.out.println("tickets empty");
             return;
         }
         for(Ticket eachTicket : this.tickets){
-            System.out.println(ticket.toString());
+            System.out.println(eachTicket.toString());
         }
     }
-    public void searchTicket(Ticket ticket) {
+    public boolean searchTicket(Ticket ticket) {
         if(!(this.tickets.contains(ticket))){
             System.out.println("Ticket not found.");
-            return;
+            return false;
         }
         for(Ticket eachTicket : this.tickets){
             if(eachTicket.equals(ticket)) {
                 System.out.println(ticket.toString());
+                return true;
             }
         }
+        return false;
     }
 
     public void CancelBooking(LinkedList<Ticket> bigTickets, Ticket ticketToCancel) {
@@ -92,6 +94,7 @@ public class Client extends User{
     public void updateBooking(LinkedList<Ticket> bigTickets, Ticket ticketToUpdate, Ticket newTicket) {
 
         if (bigTickets.contains(ticketToUpdate)) {
+
             if (newTicket.getPassenger().equals(ticketToUpdate.getPassenger()) && newTicket.getFlight().equals(ticketToUpdate.getFlight())) {
                 int index = ((List<Ticket>) bigTickets).indexOf(ticketToUpdate);
                 ((List<Ticket>) bigTickets).set(index, newTicket);
@@ -141,5 +144,30 @@ public class Client extends User{
             }while(x != 4);
         }
         else{ System.out.println("Invalid info."); }
+    }
+
+    public boolean createAccount(HashSet<User> users) {
+        Scanner scan = new Scanner(System.in);
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+
+        System.out.print("Username : ");
+        this.username = scan.next();
+
+        do {
+            System.out.print("Email : ");
+            this.email = scan.next();
+        } while (!(pat.matcher(email).matches()));
+
+        System.out.print("Password : ");
+        this.password = scan.next();
+
+        users.add(this);
+
+        return true;
     }
 }

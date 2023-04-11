@@ -67,29 +67,5 @@ public class User {
         return Objects.hash(userID, username, email, password);
     }
 
-    public boolean createAccount(HashSet<User> users) {
-        Scanner scan = new Scanner(System.in);
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-
-        System.out.print("Username : ");
-        this.username = scan.next();
-
-        do {
-            System.out.print("Email : ");
-            this.email = scan.next();
-        } while (!(pat.matcher(email).matches()));
-
-        System.out.print("Password : ");
-        this.password = scan.next();
-
-        users.add(this);
-
-        return true;
-    }
 
 }

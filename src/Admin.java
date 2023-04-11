@@ -127,7 +127,10 @@ public class Admin extends User {
 
     public void removeFlight(Flight flight, PriorityQueue<Flight> flights) {
         System.out.println("removing flight...");
-        flights.remove(flight);
+        if(!flights.remove(flight)){
+            System.out.println("couldn't remove flight...");
+            return;
+        }
         System.out.println("flight removed.");
     }
     public void updateFlight(Flight flight, PriorityQueue<Flight> flights) {

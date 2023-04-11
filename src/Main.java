@@ -29,7 +29,7 @@ public class Main {
 
 
         Admin admin = new Admin();
-        admin.createAccount(users);
+        users.add(admin);
 
         admin.addFlight(flight, flights);
 
