@@ -32,7 +32,7 @@ public class Client extends User{
         this.tickets = tickets;
     }
 
-    public void bookTicket(int seatNum, Flight flight, double baggageWeight, LocalDateTime reservationDate, LinkedList<Ticket> bigTickets){
+    public boolean bookTicket(int seatNum, Flight flight, double baggageWeight, LocalDateTime reservationDate, LinkedList<Ticket> bigTickets){
         Ticket ticket = new Ticket();
         double price = flight.getSeats()[seatNum].getPrice();
 
@@ -43,11 +43,21 @@ public class Client extends User{
         ticket.setBaggageWeight(baggageWeight);
         ticket.setReservationDate(reservationDate);
 
+
+        System.out.println("adding ticket in flight tickets collection...");
+        if(!flight.addInTickets(ticket)){
+            System.out.println("ticket not added, terminating...");
+            return false;
+        }
+        System.out.println("ticket added...");
+
         System.out.println("adding ticket in tickets...");
         tickets.add(ticket);
         System.out.println("adding ticket in big ticket...");
         bigTickets.add(ticket);
         System.out.println("added ticket.");
+
+        return true;
     }
 
     public void viewTickets() {
@@ -87,7 +97,10 @@ public class Client extends User{
 
         allTickets.remove(ticketToCancel);
         System.out.println("removed ticket from big ticket collection.");
+
+        ticketToCancel.getFlight().removeOfTickets(ticketToCancel);
         System.out.println("done");
+
     }
 
     public void updateBooking(LinkedList<Ticket> bigTickets, Ticket ticketToUpdate, Ticket newTicket) {

@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ public class Flight {
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
     private double estimatedDuration;
-    private Ticket[] tickets;
+    private LinkedList<Ticket> tickets = new LinkedList<>();
     private Seat[] seats;
     private int numOfSeats;
     static int count = 0;
@@ -81,12 +82,50 @@ public class Flight {
         this.estimatedDuration = estimatedDuration;
     }
 
-    public Ticket[] getTickets() {
+    public LinkedList<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(Ticket[] tickets) {
+    public void setTickets(LinkedList<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public boolean addInTickets(Ticket ticket){
+        System.out.println("checking if seat is available...");
+        for(Seat seat : seats) {
+
+            if(ticket.getSeatNum() == seat.getSeatNumber() && seat.isAvailable()) {
+                this.tickets.add(ticket);
+
+                System.out.println("seat is available");
+                seat.setAvailable(false);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeOfTickets(Ticket ticketToRemove){
+
+        for(Seat seat : seats) {
+
+            if(ticketToRemove.getSeatNum() == seat.getSeatNumber()) {
+                if(!(seat.isAvailable())) {
+                    System.out.println("seat found!!");
+                    this.tickets.remove(ticketToRemove);
+
+                    System.out.println("seat removed");
+                    seat.setAvailable(true);
+
+                    return true;
+                }
+                else {
+                    System.out.println("seat is already available");
+                }
+            }
+        }
+        return false;
     }
 
     public Seat[] getSeats() {

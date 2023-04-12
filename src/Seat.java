@@ -13,13 +13,17 @@ public class Seat {
     private int seatNumber;
     private String seatType;
     private double price;
+    private boolean available = true;
+
+    static int count = 0;
 
     public Seat() {}
 
     public Seat(int seatNumber, String seatType, double price) {
-        this.seatNumber = seatNumber;
+        seatNumber = count;
         this.seatType = seatType;
         this.price = price;
+        count++;
     }
     public int getSeatNumber() {
         return seatNumber;
@@ -43,6 +47,14 @@ public class Seat {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override
