@@ -52,7 +52,7 @@ public class Main {
         allTickets.add(ticket1);
         allTickets.add(ticket);
 
-        client.CancelBooking(allTickets, client.getTicket(0));
+        client.cancelBooking(allTickets, client.getTicket(0));
 
         //client.updateBooking(allTickets, ticket1, ticket);
 

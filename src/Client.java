@@ -76,65 +76,6 @@ public class Client extends User{
         return true;
     }
 
-
-    public boolean bookTicket(){
-        Scanner scan = new Scanner(System.in);
-        int seatNo;
-
-        Flight flight = new Flight();
-        Ticket ticket = new Ticket();
-        System.out.println("Let's book a ticket..");
-
-        System.out.println("Enter the booked seat number: ");
-        seatNo = scan.nextInt();
-
-        System.out.println("Enter the booked seat number: ");
-
-        flight.addInTickets()
-//
-    }
-
-    public void updateBooking(Ticket ticketToUpdate,Ticket newTicket) {
-        Scanner scan = new Scanner(System.in);
-        char input;
-
-        if (tickets.contains(ticketToUpdate)){
-            System.out.println("Ticket found");
-
-            System.out.print("remove Ticket? (y/n): ");
-            input = scan.next().charAt(0);
-            if(input == 'y' || input == 'Y')
-                cancelBooking(tickets,ti);
-
-            System.out.print("edit flight? (y/n): ");
-            input = scan.next().charAt(0);
-            if(input == 'y' || input == 'Y') {
-                removeFlight(flight);
-                addFlight(newFlight);
-            }
-        }
-        else {
-            System.out.println("flight not found");
-
-            System.out.print("Add flight? (y/n): ");
-            input = scan.next().charAt(0);
-            if(input == 'y' || input == 'Y')
-                addFlight(flight);
-        }
-        System.out.println("to show flight: type 1");
-        System.out.println("to exit flight: type 2");
-        input = scan.next().charAt(0);
-        switch (input){
-            case '1':
-                System.out.println(flight);
-                break;
-            case '2':
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + input);
-        }
-    }
-
     public void viewTickets() {
         if(this.tickets.isEmpty()){
             System.out.println("tickets empty");
@@ -213,12 +154,12 @@ public class Client extends User{
             System.out.print("remove Ticket? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y')
-                CancelBooking(allTicket, ticketToUpdate);
+                cancelBooking(allTicket, ticketToUpdate);
 
             System.out.print("edit ticket? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y') {
-                CancelBooking(allTicket, ticketToUpdate);
+                cancelBooking(allTicket, ticketToUpdate);
                 bookTicket(newTicket, allTicket);
             }
         }
