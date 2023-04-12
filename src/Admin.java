@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Admin extends User {
 
+    static PriorityQueue<Flight> flights = new PriorityQueue<Flight>(5, new FlightComparator());
 
     @Override
     public String toString() {
@@ -14,7 +15,7 @@ public class Admin extends User {
                 '}';
     }
 
-    public void addFlight(PriorityQueue<Flight> flights, HashSet<Route> routes) {
+    public void addFlight(HashSet<Route> routes) {
         Scanner scan = new Scanner(System.in);
         Airport airport = new Airport();
         Route route = new Route();
@@ -119,13 +120,13 @@ public class Admin extends User {
 
         flights.add(flight);
     }
-    public void addFlight(Flight flight, PriorityQueue<Flight> flights){
+    public void addFlight(Flight flight){
         System.out.println("adding flight...");
         flights.add(flight);
         System.out.println("flight added.");
     }
 
-    public void removeFlight(Flight flight, PriorityQueue<Flight> flights) {
+    public void removeFlight(Flight flight) {
         System.out.println("removing flight...");
         if(!flights.remove(flight)){
             System.out.println("couldn't remove flight...");
@@ -133,7 +134,7 @@ public class Admin extends User {
         }
         System.out.println("flight removed.");
     }
-    public void updateFlight(Flight flight, PriorityQueue<Flight> flights) {
+    public void updateFlight(Flight flight, Flight newFlight) {
         Scanner scan = new Scanner(System.in);
         char input;
 
@@ -143,13 +144,13 @@ public class Admin extends User {
             System.out.print("remove flight? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y')
-                removeFlight(flight, flights);
+                removeFlight(flight);
 
             System.out.print("edit flight? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y') {
-                removeFlight(flight, flights);
-                addFlight(flight, flights);
+                removeFlight(flight);
+                addFlight(newFlight);
             }
         }
         else {
@@ -158,7 +159,7 @@ public class Admin extends User {
             System.out.print("Add flight? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y')
-                addFlight(flight, flights);
+                addFlight(flight);
         }
         System.out.println("to show flight: type 1");
         System.out.println("to exit flight: type 2");

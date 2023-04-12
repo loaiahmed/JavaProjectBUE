@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 import java.util.*;
 
@@ -115,15 +114,12 @@ public class Client extends User{
         }
     }
 
-    public void manageAcc(){
+    public void manageAcc(HashSet<User> users){
         Scanner sc = new Scanner (System.in);
         int x;
         String pass2, user2, email2;
-        String pass1, user1;
-        System.out.println("Enter user name. "); user1 = sc.next();
-        System.out.println("Enter password. "); pass1 = sc.next();
 
-        if(pass1.equals(this.getPassword()) && user1.equals(this.getUsername())){
+        if(users.contains(this)){
             do{
                 System.out.println("Enter 1 to change username, 2 to change password, 3 to change email, 4 to exit.");
                 x = sc.nextInt();
@@ -146,28 +142,4 @@ public class Client extends User{
         else{ System.out.println("Invalid info."); }
     }
 
-    public boolean createAccount(HashSet<User> users) {
-        Scanner scan = new Scanner(System.in);
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-
-        System.out.print("Username : ");
-        this.username = scan.next();
-
-        do {
-            System.out.print("Email : ");
-            this.email = scan.next();
-        } while (!(pat.matcher(email).matches()));
-
-        System.out.print("Password : ");
-        this.password = scan.next();
-
-        users.add(this);
-
-        return true;
-    }
 }

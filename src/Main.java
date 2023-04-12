@@ -24,23 +24,21 @@ public class Main {
 
         LinkedList<Ticket> tickets = new LinkedList<>();
 
-        PriorityQueue<Flight> flights = new PriorityQueue<Flight>(5, new FlightComparator());
-
 
 
         Admin admin = new Admin();
-        users.add(admin);
+        admin.createAccount(users);
 
-        admin.addFlight(flight, flights);
+        admin.addFlight(flight);
 
 //        admin.removeFlight(flights.peek(), flights);
 
-        admin.updateFlight(flights.peek(), flights);
+        //admin.updateFlight(flights.peek(), flights);
 
         System.out.println(routes);
-        System.out.println(flights);
+//        System.out.println(flights);
 
-        assert flights.peek() != null;
+//        assert flights.peek() != null;
         admin.generateReport(flight.getRoute(), routes, tickets );
 
         System.out.println("--------------------------------");
@@ -63,14 +61,14 @@ public class Main {
 
         System.out.println("----------------------");
 
-        client.manageAcc();
+        client.manageAcc(users);
 
         client.searchTicket(ticket);
 
         System.out.println(client);
 
         System.out.println(routes);
-        System.out.println(flights);
+//        System.out.println(flights);
 
 
         System.out.print("WORKS FOR NOW");
