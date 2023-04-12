@@ -32,7 +32,7 @@ public class Client extends User{
         this.tickets = tickets;
     }
 
-    public boolean bookTicket(int seatNum, Flight flight, double baggageWeight, LocalDateTime reservationDate, LinkedList<Ticket> bigTickets){
+    public boolean bookTicket(int seatNum, Flight flight, double baggageWeight, LocalDateTime reservationDate, LinkedList<Ticket> allTickets){
         Ticket ticket = new Ticket();
         double price = flight.getSeats()[seatNum].getPrice();
 
@@ -54,11 +54,28 @@ public class Client extends User{
         System.out.println("adding ticket in tickets...");
         tickets.add(ticket);
         System.out.println("adding ticket in big ticket...");
-        bigTickets.add(ticket);
+        allTickets.add(ticket);
         System.out.println("added ticket.");
 
         return true;
     }
+    public boolean bookTicket(Ticket ticket, LinkedList<Ticket> allTickets){
+        System.out.println("adding ticket in flight tickets collection...");
+        if(!ticket.getFlight().addInTickets(ticket)){
+            System.out.println("ticket not added, terminating...");
+            return false;
+        }
+        System.out.println("ticket added...");
+
+        System.out.println("adding ticket in tickets...");
+        tickets.add(ticket);
+        System.out.println("adding ticket in big ticket...");
+        allTickets.add(ticket);
+        System.out.println("added ticket.");
+
+        return true;
+    }
+
 
     public boolean bookTicket(){
         Scanner scan = new Scanner(System.in);
@@ -185,6 +202,30 @@ public class Client extends User{
         }
     }
      */
+
+    public void updateBooking(Ticket ticketToUpdate,Ticket newTicket, LinkedList<Ticket> allTicket) {
+        Scanner scan = new Scanner(System.in);
+        char input;
+
+        if (tickets.contains(ticketToUpdate)){
+            System.out.println("Ticket found");
+
+            System.out.print("remove Ticket? (y/n): ");
+            input = scan.next().charAt(0);
+            if(input == 'y' || input == 'Y')
+                CancelBooking(allTicket, ticketToUpdate);
+
+            System.out.print("edit ticket? (y/n): ");
+            input = scan.next().charAt(0);
+            if(input == 'y' || input == 'Y') {
+                CancelBooking(allTicket, ticketToUpdate);
+                bookTicket(newTicket, allTicket);
+            }
+        }
+    }
+
+
+
 
     public void manageAcc(HashSet<User> users){
         Scanner sc = new Scanner (System.in);
