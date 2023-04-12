@@ -54,7 +54,7 @@ public class Main {
 
         client.CancelBooking(allTickets, client.getTicket(0));
 
-        client.updateBooking(allTickets, ticket1, ticket);
+        //client.updateBooking(allTickets, ticket1, ticket);
 
         System.out.println("----------------------");
 
