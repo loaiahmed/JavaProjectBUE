@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Admin extends User {
 
-    static PriorityQueue<Flight> flights = new PriorityQueue<Flight>(5, new FlightComparator());
+    static PriorityQueue<Flight> flights = new PriorityQueue<>(5, new FlightComparator());
 
     @Override
     public String toString() {
@@ -15,7 +15,7 @@ public class Admin extends User {
                 '}';
     }
 
-    public void addFlight(HashSet<Route> routes) {
+    public void addFlight() {
         Scanner scan = new Scanner(System.in);
         Airport airport = new Airport();
         Route route = new Route();
@@ -57,7 +57,7 @@ public class Admin extends User {
         airport.setCountry(input1);
         route.setArrival_airport(airport);
 
-        routes.add(route);
+        Flight.routes.add(route);
         
 
         System.out.print("Route: Distance: ");
@@ -169,13 +169,15 @@ public class Admin extends User {
                 System.out.println(flight);
                 break;
             case '2':
-                return;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + input);
         }
     }
-    public boolean generateReport(Route route, HashSet<Route> routes, LinkedList<Ticket> tickets) {
+    public boolean generateReport(Route route, LinkedList<Ticket> allTickets) {
         System.out.println("searching for route...");
 
-        if(!(routes.contains(route))){
+        if(!(Flight.routes.contains(route))){
             System.out.println("route not found.");
             return false;
         }
@@ -184,7 +186,7 @@ public class Admin extends User {
 
         double fare = 0;
         int numOfBookings = 0;
-        for (Ticket ticket : tickets) {
+        for (Ticket ticket : allTickets) {
 
             if (route.equals(ticket.getFlight().getRoute())) {
                 fare += ticket.getPrice();

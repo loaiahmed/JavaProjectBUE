@@ -1,6 +1,6 @@
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -15,9 +15,12 @@ public class Flight {
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
     private double estimatedDuration;
+    private Ticket[] tickets;
     private Seat[] seats;
     private int numOfSeats;
     static int count = 0;
+
+    static HashSet<Route> routes = new HashSet<>();
 
 
     public Flight(Route route, LocalDateTime arrivalTime,
@@ -76,6 +79,14 @@ public class Flight {
 
     public void setEstimatedDuration(double estimatedDuration) {
         this.estimatedDuration = estimatedDuration;
+    }
+
+    public Ticket[] getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Ticket[] tickets) {
+        this.tickets = tickets;
     }
 
     public Seat[] getSeats() {

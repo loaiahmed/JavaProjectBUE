@@ -4,8 +4,6 @@ import java.time.*;
 public class Main {
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
-
         Seat[] seats = new Seat[20];
         for (int i = 0; i < seats.length; i++) {
             seats[i] = new Seat(i, "eco", 77);
@@ -17,12 +15,11 @@ public class Main {
 
         Flight flight = new Flight(route, LocalDateTime.now(), LocalDateTime.now(), 10.0, seats, 20);
 
-        HashSet<Route> routes = new HashSet<>();
-        routes.add(route);
+        Flight.routes.add(route);
 
         HashSet<User> users = new HashSet<>();
 
-        LinkedList<Ticket> tickets = new LinkedList<>();
+        LinkedList<Ticket> allTickets = new LinkedList<>();
 
 
 
@@ -35,11 +32,11 @@ public class Main {
 
         //admin.updateFlight(flights.peek(), flights);
 
-        System.out.println(routes);
+        System.out.println(Flight.routes);
 //        System.out.println(flights);
 
 //        assert flights.peek() != null;
-        admin.generateReport(flight.getRoute(), routes, tickets );
+        admin.generateReport(flight.getRoute(), allTickets );
 
         System.out.println("--------------------------------");
 
@@ -48,16 +45,16 @@ public class Main {
         System.out.println(users);
 
 
-        client.bookTicket(1, flight, 10, LocalDateTime.now(), tickets );
+        client.bookTicket(1, flight, 10, LocalDateTime.now(), allTickets );
 
         Ticket ticket = new Ticket(2, flight, client, 100, LocalDateTime.now());
         Ticket ticket1 = new Ticket(2, flight, client, 100, LocalDateTime.now());
-        tickets.add(ticket1);
-        tickets.add(ticket);
+        allTickets.add(ticket1);
+        allTickets.add(ticket);
 
-        client.CancelBooking(tickets, client.getTicket(0));
+        client.CancelBooking(allTickets, client.getTicket(0));
 
-        client.updateBooking(tickets, ticket1, ticket);
+        client.updateBooking(allTickets, ticket1, ticket);
 
         System.out.println("----------------------");
 
@@ -67,7 +64,7 @@ public class Main {
 
         System.out.println(client);
 
-        System.out.println(routes);
+        System.out.println(Flight.routes);
 //        System.out.println(flights);
 
 

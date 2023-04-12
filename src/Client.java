@@ -66,16 +66,16 @@ public class Client extends User{
         }
         for(Ticket eachTicket : this.tickets){
             if(eachTicket.equals(ticket)) {
-                System.out.println(ticket.toString());
+                System.out.println(ticket);
                 return true;
             }
         }
         return false;
     }
 
-    public void CancelBooking(LinkedList<Ticket> bigTickets, Ticket ticketToCancel) {
+    public void CancelBooking(LinkedList<Ticket> allTickets, Ticket ticketToCancel) {
         System.out.println("checking if ticket exist in collections...");
-        if(!(this.tickets.contains(ticketToCancel) && bigTickets.contains(ticketToCancel))){
+        if(!(this.tickets.contains(ticketToCancel) && allTickets.contains(ticketToCancel))){
             System.out.println("Ticket not found.");
             return;
         }
@@ -85,7 +85,7 @@ public class Client extends User{
         this.tickets.remove(ticketToCancel);
         System.out.println("removed ticket from passenger ticket collection...");
 
-        bigTickets.remove(ticketToCancel);
+        allTickets.remove(ticketToCancel);
         System.out.println("removed ticket from big ticket collection.");
         System.out.println("done");
     }
@@ -132,7 +132,7 @@ public class Client extends User{
                     pass2 = sc.next();
                     this.setUsername(pass2); }
 
-                else if( x == 3){ System.out.println("Enter new email");;
+                else if( x == 3){ System.out.println("Enter new email");
                     email2 = sc.next();
                     this.setUsername(email2); }
 
