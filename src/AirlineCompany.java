@@ -15,16 +15,16 @@ public class AirlineCompany {
 
 
 
-        FileOutputStream fos = new FileOutputStream("onlyOnce.txt");
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeInt(0);
-        oos.close();
-        fos.close();
+//        FileOutputStream fos = new FileOutputStream("onlyOnce.txt");        // to reset  startUpOperation();
+//        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//        oos.writeInt(0);
+//        oos.close();
+//        fos.close();
 
 
 
-//        startUpOperation();         // IMPORTANT
-//        readFiles();                // IMPORTANT
+        startUpOperation();         // IMPORTANT
+        readFiles();                // IMPORTANT
 
 
         Seat[] seats = new Seat[20];
@@ -70,7 +70,7 @@ public class AirlineCompany {
 
         System.out.print("WORKS FOR NOW");
 
-//        StartUp startUp = new StartUp();        // IMPORTANT
+        StartUp startUp = new StartUp();        // IMPORTANT
 
     }
     public static Client getClientWithAccount(String emailAddress, String password){
