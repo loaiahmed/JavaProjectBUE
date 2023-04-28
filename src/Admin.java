@@ -1,8 +1,9 @@
 import java.time.LocalDateTime;
-import java.time.format.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Admin extends User {
+
 
     static PriorityQueue<Flight> flights = new PriorityQueue<>(5, new FlightComparator());
 
@@ -13,6 +14,30 @@ public class Admin extends User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+    public boolean createAccount() {
+//        Scanner scan = new Scanner(System.in);
+//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+//                "[a-zA-Z0-9_+&*-]+)*@" +
+//                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+//                "A-Z]{2,7}$";
+//
+//        Pattern pat = Pattern.compile(emailRegex);
+//
+//        System.out.print("Username : ");
+//        this.username = scan.next();
+//
+//        do {
+//            System.out.print("Email : ");
+//            this.email = scan.next();
+//        } while (!(pat.matcher(email).matches()));
+//
+//        System.out.print("Password : ");
+//        this.password = scan.next();
+
+        AirlineCompany.allAdmins.add(this);
+
+        return true;
     }
 
     public void addFlight() {
@@ -28,9 +53,6 @@ public class Admin extends User {
         System.out.print("         Lets add a flight together\n");
         System.out.print("-----------------------------------------------\n");
         System.out.print("Route: Destination: \n");
-        System.out.print("                  Airport Code: ");
-        input3 = scan.nextInt();
-        airport.setAirportCode(input3);
         System.out.print("                  Airport Name: ");
         input1 = scan.next();
         airport.setName(input1);
@@ -40,12 +62,9 @@ public class Admin extends User {
         System.out.print("                  Airport Country: ");
         input1 = scan.next();
         airport.setCountry(input1);
-        route.setDeparture_airport(airport);
+        route.setDestinationAirport(airport);
 
         System.out.print("Route: Arrival: \n");
-        System.out.print("                  Airport Code: ");
-        input3 = scan.nextInt();
-        airport.setAirportCode(input3);
         System.out.print("                  Airport Name: ");
         input1 = scan.next();
         airport.setName(input1);
@@ -55,14 +74,11 @@ public class Admin extends User {
         System.out.print("                  Airport Country: ");
         input1 = scan.next();
         airport.setCountry(input1);
-        route.setArrival_airport(airport);
+        route.setOriginAirport(airport);
 
         Flight.routes.add(route);
         
 
-        System.out.print("Route: Distance: ");
-        input2 = scan.nextDouble();
-        route.setDistance(input2);
         flight.setRoute(route);
 
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
@@ -78,10 +94,6 @@ public class Admin extends User {
         input1 = scan.next();
         LocalDateTime dTime = LocalDateTime.parse(input1);
         flight.setDepartureTime(dTime);
-
-        System.out.print("Flight: Time till arrival: ");
-        input2 = scan.nextDouble();
-        flight.setEstimatedDuration(input2);
 
         System.out.print("Flight: Seats: number of seats: ");
         int seatsSize = scan.nextInt();
@@ -124,6 +136,10 @@ public class Admin extends User {
         System.out.println("adding flight...");
         flights.add(flight);
         System.out.println("flight added.");
+
+        System.out.println("adding Route...");
+        Flight.routes.add(flight.getRoute());
+        System.out.println("Route added.");
     }
 
     public void removeFlight(Flight flight) {
@@ -174,19 +190,31 @@ public class Admin extends User {
                 throw new IllegalStateException("Unexpected value: " + input);
         }
     }
-    public boolean generateReport(Route route, LinkedList<Ticket> allTickets) {
+
+    public void updateFlight1(Flight flight, Flight newFlight){
+
+        if (!(flights.contains(flight))){
+            System.out.println("Flight not found");
+            return;
+        }
+        flights.remove(flight);
+        flights.add(newFlight);
+
+        System.out.println("removed old Flight and added new Flight!!");
+    }
+    public double[] generateReport(Route route) {
         System.out.println("searching for route...");
 
         if(!(Flight.routes.contains(route))){
             System.out.println("route not found.");
-            return false;
+            return null;
         }
         System.out.println("route found.");
         System.out.println("Searching for tickets for flights with specified route...");
 
         double fare = 0;
-        int numOfBookings = 0;
-        for (Ticket ticket : allTickets) {
+        double numOfBookings = 0;
+        for (Ticket ticket : AirlineCompany.allTickets) {
 
             if (route.equals(ticket.getFlight().getRoute())) {
                 fare += ticket.getPrice();
@@ -196,7 +224,18 @@ public class Admin extends User {
         System.out.println("tickets found...fare calculated ");
         System.out.println("     fare : " + fare);
         System.out.println("     number of bookings : " + numOfBookings);
-        return true;
+        return new double[]{fare, numOfBookings};
+    }
+
+    public static LinkedList<Flight> getFlightsFromRoute(Route route){
+//        LinkedList<Flight> flights = new LinkedList<>(Admin.flights);
+        LinkedList<Flight> flights1 = new LinkedList<>();
+        for(Flight flight: Admin.flights){
+            if(flight.getRoute().equals(route)){
+                flights1.add(flight);
+            }
+        }
+        return flights1;
     }
 
     public Admin(String username, String email, String password) {

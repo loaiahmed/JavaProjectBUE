@@ -10,22 +10,16 @@ import java.util.Objects;
  * @author youssef
  */
 public class Airport {
-    private int airportCode;
     private String name;
     private String city;
     private String country;
 
     public Airport() {}
 
-    public Airport(int airportCode, String name, String city, String country) {
-        this.airportCode = airportCode;
+    public Airport(String name, String city, String country) {
         this.name = name;
         this.city = city;
         this.country = country;
-    }
-
-    public int getAirportCode() {
-        return airportCode;
     }
 
     public String getCity() {
@@ -38,10 +32,6 @@ public class Airport {
 
     public String getName() {
         return name;
-    }
-
-    public void setAirportCode(int airportCode) {
-        this.airportCode = airportCode;
     }
 
     public void setCity(String city) {
@@ -58,19 +48,21 @@ public class Airport {
 
     @Override
     public String toString() {
-        return super.toString(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return "Airport{" +
+                "name='" + name + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Airport airport = (Airport) o;
-        return airportCode == airport.airportCode && Objects.equals(name, airport.name) && Objects.equals(city, airport.city) && Objects.equals(country, airport.country);
+        return Objects.equals(name, airport.name) && Objects.equals(city, airport.city) && Objects.equals(country, airport.country);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(airportCode, name, city, country);
+        return Objects.hash(name, city, country);
     }
 }

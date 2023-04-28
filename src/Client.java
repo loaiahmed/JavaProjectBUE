@@ -3,10 +3,11 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Client extends User{
 
-    LinkedList<Ticket> tickets = new LinkedList<>();
+    private LinkedList<Ticket> tickets = new LinkedList<>();
 
     public Client(String username, String email, String password) {
         super(username, email, password);
@@ -30,6 +31,31 @@ public class Client extends User{
 
     public void setTickets(LinkedList<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public boolean createAccount() {
+//        Scanner scan = new Scanner(System.in);
+//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+//                "[a-zA-Z0-9_+&*-]+)*@" +
+//                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+//                "A-Z]{2,7}$";
+//
+//        Pattern pat = Pattern.compile(emailRegex);
+//
+//        System.out.print("Username : ");
+//        this.username = scan.next();
+//
+//        do {
+//            System.out.print("Email : ");
+//            this.email = scan.next();
+//        } while (!(pat.matcher(email).matches()));
+//
+//        System.out.print("Password : ");
+//        this.password = scan.next();
+
+        AirlineCompany.allClients.add(this);
+
+        return true;
     }
 
     public boolean bookTicket(int seatNum, Flight flight, double baggageWeight, LocalDateTime reservationDate, LinkedList<Ticket> allTickets){
@@ -59,7 +85,7 @@ public class Client extends User{
 
         return true;
     }
-    public boolean bookTicket(Ticket ticket, LinkedList<Ticket> allTickets){
+    public boolean bookTicket(Ticket ticket){
         System.out.println("adding ticket in flight tickets collection...");
         if(!ticket.getFlight().addInTickets(ticket)){
             System.out.println("ticket not added, terminating...");
@@ -70,11 +96,22 @@ public class Client extends User{
         System.out.println("adding ticket in tickets...");
         tickets.add(ticket);
         System.out.println("adding ticket in big ticket...");
-        allTickets.add(ticket);
+        AirlineCompany.allTickets.add(ticket);
         System.out.println("added ticket.");
 
         return true;
     }
+    public void bookTicket(LinkedList<Seat> seats, Flight flight, int baggageWeight){
+        for(Seat seat : seats){
+            Ticket ticket = new Ticket(seat.getSeatNumber(), flight, this, baggageWeight);
+            tickets.add(ticket);
+            AirlineCompany.allTickets.add(ticket);
+
+            flight.reserveSeats(seats);
+        }
+        System.out.println("Tickets Booked");
+    }
+
 
     public void viewTickets() {
         if(this.tickets.isEmpty()){
@@ -99,9 +136,9 @@ public class Client extends User{
         return false;
     }
 
-    public void cancelBooking(LinkedList<Ticket> allTickets, Ticket ticketToCancel) {
+    public void CancelBooking(Ticket ticketToCancel) {
         System.out.println("checking if ticket exist in collections...");
-        if(!(this.tickets.contains(ticketToCancel) && allTickets.contains(ticketToCancel))){
+        if(!(this.tickets.contains(ticketToCancel) && AirlineCompany.allTickets.contains(ticketToCancel))){
             System.out.println("Ticket not found.");
             return;
         }
@@ -111,7 +148,7 @@ public class Client extends User{
         this.tickets.remove(ticketToCancel);
         System.out.println("removed ticket from passenger ticket collection...");
 
-        allTickets.remove(ticketToCancel);
+        AirlineCompany.allTickets.remove(ticketToCancel);
         System.out.println("removed ticket from big ticket collection.");
 
         ticketToCancel.getFlight().removeOfTickets(ticketToCancel);
@@ -119,7 +156,7 @@ public class Client extends User{
 
     }
 
-    /*public void updateBooking(LinkedList<Ticket> bigTickets, Ticket ticketToUpdate, Ticket newTicket) {
+    public void updateBooking(LinkedList<Ticket> bigTickets, Ticket ticketToUpdate, Ticket newTicket) {
 
         if (bigTickets.contains(ticketToUpdate)) {
 
@@ -130,7 +167,7 @@ public class Client extends User{
             }
 
             else {
-                CancelBooking(bigTickets, ticketToUpdate);
+                CancelBooking(ticketToUpdate);
                 int s = ticketToUpdate.getSeatNum();
                 Flight f =  newTicket.getFlight();
                 double bw =  newTicket. getBaggageWeight();
@@ -142,9 +179,8 @@ public class Client extends User{
             System.out.println("Ticket to update not found in booked collection!");
         }
     }
-     */
 
-    public void updateBooking(Ticket ticketToUpdate,Ticket newTicket, LinkedList<Ticket> allTicket) {
+    public void updateBooking(Ticket ticketToUpdate,Ticket newTicket) {
         Scanner scan = new Scanner(System.in);
         char input;
 
@@ -154,26 +190,36 @@ public class Client extends User{
             System.out.print("remove Ticket? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y')
-                cancelBooking(allTicket, ticketToUpdate);
+                CancelBooking(ticketToUpdate);
 
             System.out.print("edit ticket? (y/n): ");
             input = scan.next().charAt(0);
             if(input == 'y' || input == 'Y') {
-                cancelBooking(allTicket, ticketToUpdate);
-                bookTicket(newTicket, allTicket);
+                CancelBooking(ticketToUpdate);
+                bookTicket(newTicket);
             }
         }
     }
+    public boolean updateTicket(Ticket ticket, int baggageWeight, int seatNum){
+        if(tickets.contains(ticket)){
+            if(ticket.getFlight().isSeatReserved(seatNum)){
+                System.out.println("Seat already Reserved");
+                return false;
+            }
+            ticket.getFlight().updateReservation(ticket.getSeatNum(), seatNum);
+            ticket.setBaggageWeight(baggageWeight);
+            ticket.setSeatNum(seatNum);
+            return true;
+        }
+        return false;
+    }
 
-
-
-
-    public void manageAcc(HashSet<User> users){
+    public void manageAcc(){
         Scanner sc = new Scanner (System.in);
         int x;
         String pass2, user2, email2;
 
-        if(users.contains(this)){
+        if(AirlineCompany.allClients.contains(this)){
             do{
                 System.out.println("Enter 1 to change username, 2 to change password, 3 to change email, 4 to exit.");
                 x = sc.nextInt();
@@ -195,5 +241,38 @@ public class Client extends User{
         }
         else{ System.out.println("Invalid info."); }
     }
+    public LinkedList<Ticket> getTicketsFromRoute(Route route){
+        LinkedList<Ticket> tickets1 = new LinkedList<>();
+        for(Ticket ticket: tickets){
+            if(ticket.getFlight().getRoute().equals(route)){
+                tickets1.add(ticket);
+            }
+        }
+        return tickets1;
+    }
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "tickets=" + tickets +
+                ", userID=" + userID +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Client client = (Client) o;
+        return Objects.equals(tickets, client.tickets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), tickets);
+    }
 }

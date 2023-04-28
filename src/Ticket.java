@@ -20,6 +20,15 @@ public class Ticket {
         this.baggageWeight = baggageWeight;
         this.reservationDate = reservationDate;
         count++;
+    }public Ticket(int seatNum, Flight flight, Client passenger, double baggageWeight) {
+        this.ticketNumber = count;
+        this.seatNum = seatNum;
+        this.flight = flight;
+        this.passenger = passenger;
+        this.price = flight.getSeats()[seatNum].getPrice();
+        this.baggageWeight = baggageWeight;
+        this.reservationDate = LocalDateTime.now();
+        count++;
     }
     public Ticket() {
         this.ticketNumber = count;
@@ -88,7 +97,7 @@ public class Ticket {
                 "ticketNumber=" + ticketNumber +
                 ", seatNum=" + seatNum +
                 ", flight=" + flight +
-                ", passenger=" + passenger +
+//                ", passenger=" + passenger +
                 ", price=" + price +
                 ", baggageWeight=" + baggageWeight +
                 '}';

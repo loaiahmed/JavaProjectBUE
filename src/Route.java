@@ -11,16 +11,14 @@ import java.util.Objects;
  */
 public class Route {
     private int RouteNumber;
-    private Airport Arrival_airport;
-    private Airport Departure_airport;
-    private double Distance;
+    private Airport originAirport;
+    private Airport destinationAirport;
     static int count = 0;
 
-    public Route(Airport Arrival_airport, Airport Departure_airport, double Distance) {
+    public Route(Airport originAirport, Airport destinationAirport) {
         this.RouteNumber = count;
-        this.Arrival_airport = Arrival_airport;
-        this.Departure_airport = Departure_airport;
-        this.Distance = Distance;
+        this.originAirport = originAirport;
+        this.destinationAirport = destinationAirport;
         count++;
     }
 
@@ -29,41 +27,37 @@ public class Route {
         count++;
     }
 
-    public Airport getArrival_airport() {
-        return Arrival_airport;
+    public Airport getOriginAirport() {
+        return originAirport;
     }
 
-    public Airport getDeparture_airport() {
-        return Departure_airport;
-    }
-
-    public double getDistance() {
-        return Distance;
+    public Airport getDestinationAirport() {
+        return destinationAirport;
     }
 
     public int getRouteNumber() {
         return RouteNumber;
     }
 
-    public void setArrival_airport(Airport Arrival_airport) {
-        this.Arrival_airport = Arrival_airport;
+    public void setOriginAirport(Airport Arrival_airport) {
+        this.originAirport = Arrival_airport;
     }
 
-    public void setDeparture_airport(Airport Departure_airport) {
-        this.Departure_airport = Departure_airport;
+    public void setDestinationAirport(Airport Departure_airport) {
+        this.destinationAirport = Departure_airport;
     }
 
     public void setRouteNumber(int RouteNumber) {
         this.RouteNumber = RouteNumber;
     }
 
-    public void setDistance(double Distance) {
-        this.Distance = Distance;
-    }
-
     @Override
     public String toString() {
-        return super.toString(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return "Route{" +
+                "RouteNumber=" + RouteNumber +
+                ", Arrival_airport=" + originAirport.getName() +
+                ", Departure_airport=" + destinationAirport.getName() +
+                '}';
     }
 
     @Override
@@ -71,11 +65,11 @@ public class Route {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return RouteNumber == route.RouteNumber && Double.compare(route.Distance, Distance) == 0 && Objects.equals(Arrival_airport, route.Arrival_airport) && Objects.equals(Departure_airport, route.Departure_airport);
+        return RouteNumber == route.RouteNumber && Objects.equals(originAirport, route.originAirport) && Objects.equals(destinationAirport, route.destinationAirport);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(RouteNumber, Arrival_airport, Departure_airport, Distance);
+        return Objects.hash(RouteNumber, originAirport, destinationAirport);
     }
 }

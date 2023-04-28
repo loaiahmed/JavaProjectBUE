@@ -11,14 +11,13 @@ import java.util.Objects;
 
 
 public class Flight {
-    private int flightNumber;
+    private final int flightNumber;
     private Route route;
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
-    private double estimatedDuration;
     private LinkedList<Ticket> tickets = new LinkedList<>();
-    private Seat[] seats;
     private int numOfSeats;
+    private Seat[] seats;
     static int count = 0;
 
     static HashSet<Route> routes = new HashSet<>();
@@ -30,7 +29,6 @@ public class Flight {
         this.route = route;
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
-        this.estimatedDuration = estimatedDuration;
         this.seats = seats;
         this.numOfSeats = numOfSeats;
         count++;
@@ -44,10 +42,6 @@ public class Flight {
 
     public int getFlightNumber() {
         return flightNumber;
-    }
-
-    public void setFlightNumber(int flightNumber) {
-        this.flightNumber = flightNumber;
     }
 
     public Route getRoute() {
@@ -74,14 +68,6 @@ public class Flight {
         this.departureTime = departureTime;
     }
 
-    public double getEstimatedDuration() {
-        return estimatedDuration;
-    }
-
-    public void setEstimatedDuration(double estimatedDuration) {
-        this.estimatedDuration = estimatedDuration;
-    }
-
     public LinkedList<Ticket> getTickets() {
         return tickets;
     }
@@ -103,7 +89,35 @@ public class Flight {
                 return true;
             }
         }
+        System.out.println("seat is not available");
         return false;
+    }
+
+    public void reserveSeats(LinkedList<Seat> seats1){
+        for(int i = 0; i < seats1.size(); i++){
+            if(seats1.get(i).getSeatNumber() == seats[i].getSeatNumber()){
+                seats[i].setAvailable(false);
+            }
+        }
+    }
+    public void updateReservation(int oldSeatNum, int newSeatNum){
+        for(Seat seat : seats){
+            if(seat.getSeatNumber() == oldSeatNum){
+                seat.setAvailable(true);
+            }
+            if(seat.getSeatNumber() == newSeatNum){
+                seat.setAvailable(false);
+            }
+        }
+        System.out.println("Done");
+    }
+    public boolean isSeatReserved(int seatNum){
+        for(Seat seat: getAvailableSeats()){
+            if(seat.getSeatNumber() == seatNum){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean removeOfTickets(Ticket ticketToRemove){
@@ -128,6 +142,15 @@ public class Flight {
         return false;
     }
 
+    public LinkedList<Seat> getAvailableSeats(){
+        LinkedList<Seat> seats1 = new LinkedList<>();
+        for(Seat seat : seats){
+            if(seat.isAvailable()){
+                seats1.add(seat);
+            }
+        }
+        return seats1;
+    }
     public Seat[] getSeats() {
         return seats;
     }
@@ -151,7 +174,6 @@ public class Flight {
                 ", route=" + route +
                 ", arrivalTime=" + arrivalTime +
                 ", departureTime=" + departureTime +
-                ", estimatedDuration=" + estimatedDuration +
 //                ", seats=" + Arrays.toString(seats) +
                 ", numOfSeats=" + numOfSeats +
                 '}';
@@ -162,12 +184,12 @@ public class Flight {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
-        return flightNumber == flight.flightNumber && Double.compare(flight.estimatedDuration, estimatedDuration) == 0 && numOfSeats == flight.numOfSeats && Objects.equals(route, flight.route) && Objects.equals(arrivalTime, flight.arrivalTime) && Objects.equals(departureTime, flight.departureTime) && Arrays.equals(seats, flight.seats);
+        return flightNumber == flight.flightNumber && numOfSeats == flight.numOfSeats && Objects.equals(route, flight.route) && Objects.equals(arrivalTime, flight.arrivalTime) && Objects.equals(departureTime, flight.departureTime) && Objects.equals(tickets, flight.tickets) && Arrays.equals(seats, flight.seats);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(flightNumber, route, arrivalTime, departureTime, estimatedDuration, numOfSeats);
+        int result = Objects.hash(flightNumber, route, arrivalTime, departureTime, tickets, numOfSeats);
         result = 31 * result + Arrays.hashCode(seats);
         return result;
     }

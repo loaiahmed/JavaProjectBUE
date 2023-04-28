@@ -20,10 +20,9 @@ public class Seat {
     public Seat() {}
 
     public Seat(int seatNumber, String seatType, double price) {
-        seatNumber = count;
+        this.seatNumber = seatNumber;
         this.seatType = seatType;
         this.price = price;
-        count++;
     }
     public int getSeatNumber() {
         return seatNumber;
