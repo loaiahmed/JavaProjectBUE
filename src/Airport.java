@@ -3,13 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author youssef
  */
-public class Airport {
+public class Airport implements Serializable {
     private String name;
     private String city;
     private String country;

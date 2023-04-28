@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -38,8 +37,35 @@ public class AdminUI extends JFrame implements ActionListener{
 
         createTable();
         createComboBox(comboBox1);
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logOut();
+            }
+        });
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    AirlineCompany.writeFiles();
+                } catch (Exception ex) {
+                    System.out.println("Writing to files Failed!!");
+                }
+            }
+        });
     }
 
+    public void logOut(){
+        try {
+            AirlineCompany.writeFiles();
+            System.out.println("Writing to files Successful!!");
+        } catch (Exception ex) {
+            System.out.println("Writing to files Failed!!");
+        }
+        this.dispose();
+        new StartUp();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

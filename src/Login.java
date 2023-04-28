@@ -23,22 +23,22 @@ public class Login extends JFrame{
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(login, "button been pressed");
+//                JOptionPane.showMessageDialog(login, "button been pressed");
 
                 String password = String.valueOf(passwordField1.getPassword());
                 if(clientRadioButton.isSelected()) {
-                    if (AirlineCompany.isClientWithAccount(textField1.getText(), password)) {
+                    try {
+                        new ClientUI(Objects.requireNonNull(AirlineCompany.getClientWithAccount(textField1.getText(), password)));
                         JOptionPane.showMessageDialog(login, "account found");
-
-                    } else {
+                    } catch (NullPointerException NPE){
                         JOptionPane.showMessageDialog(login, "account not found");
                     }
                 }
                 if(adminRadioButton.isSelected()) {
-                    if (AirlineCompany.isAdminWithAccount(textField1.getText(), password)) {
+                    try {
+                        new AdminUI(Objects.requireNonNull(AirlineCompany.getAdminWithAccount(textField1.getText(), password)));
                         JOptionPane.showMessageDialog(login, "account found");
-
-                    } else {
+                    } catch (NullPointerException NPE){
                         JOptionPane.showMessageDialog(login, "account not found");
                     }
                 }

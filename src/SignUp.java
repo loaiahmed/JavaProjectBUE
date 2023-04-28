@@ -47,7 +47,7 @@ public class SignUp extends JFrame{
 
                 if(adminRadioButton.isSelected()){
                     Admin admin = new Admin( userNameField.getText(), emailField.getText(),  password);
-                    AirlineCompany.allAdmins.add(admin);
+                    admin.createAccount();
 
                     JOptionPane.showMessageDialog(rootPanel, "Account Created, return to setup window and log in");
                 }

@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -5,7 +6,7 @@ import java.util.Scanner;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class Client extends User{
+public class Client extends User implements Serializable {
 
     private LinkedList<Ticket> tickets = new LinkedList<>();
 

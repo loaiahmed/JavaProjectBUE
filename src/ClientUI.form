@@ -68,6 +68,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <font size="28" style="1"/>
                   <text value="Welcome, MR"/>
                 </properties>
               </component>

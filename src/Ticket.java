@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Ticket {
+public class Ticket implements Serializable {
     private int ticketNumber;
     private int seatNum;
     private Flight flight;
@@ -113,6 +114,6 @@ public class Ticket {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketNumber, seatNum, flight, passenger, price, baggageWeight, reservationDate);
+        return Objects.hash(ticketNumber, seatNum, flight, price, baggageWeight, reservationDate);
     }
 }

@@ -3,13 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author youssef
  */
-public class Route {
+public class Route implements Serializable {
     private int RouteNumber;
     private Airport originAirport;
     private Airport destinationAirport;

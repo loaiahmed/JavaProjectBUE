@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class Admin extends User {
+public class Admin extends User implements Serializable {
 
 
     static PriorityQueue<Flight> flights = new PriorityQueue<>(5, new FlightComparator());

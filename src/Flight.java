@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 
 
-public class Flight {
+public class Flight implements Serializable {
     private final int flightNumber;
     private Route route;
     private LocalDateTime arrivalTime;

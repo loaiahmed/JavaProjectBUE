@@ -1,7 +1,8 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -39,6 +40,8 @@ public class ClientUI extends JFrame implements ActionListener {
         createFlightsTable();
         createTicketsTable();
 
+        append(client.getUsername());
+
         comboBox1.addActionListener(this::actionPerformed);
         comboBox2.addActionListener(this::actionPerformed);
         updateButton.addActionListener(this::actionPerformed);
@@ -47,8 +50,34 @@ public class ClientUI extends JFrame implements ActionListener {
         bookFlightButton.addActionListener(this::actionPerformed);
         manageAccountButton.addActionListener(this::actionPerformed);
         updateTicketButton.addActionListener(this::actionPerformed);
-    }
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logOut();
+            }
+        });
 
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    AirlineCompany.writeFiles();
+                } catch (Exception ex) {
+                    System.out.println("Writing to files Failed!!");
+                }
+            }
+        });
+    }
+    public void logOut(){
+        try {
+            AirlineCompany.writeFiles();
+            System.out.println("Writing to files Successful!!");
+        } catch (Exception ex) {
+            System.out.println("Writing to files Failed!! error: " + ex);
+        }
+        this.dispose();
+        new StartUp();
+    }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if(actionEvent.getSource() == comboBox1){
@@ -108,6 +137,14 @@ public class ClientUI extends JFrame implements ActionListener {
             else{
                 JOptionPane.showMessageDialog(rootPanel, "Error: Choose a Row", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+    public void append(String s) {
+        try {
+            Document doc = welcomeMRTextPane.getDocument();
+            doc.insertString(doc.getLength(), s, null);
+        } catch(BadLocationException exc) {
+            exc.printStackTrace();
         }
     }
 
